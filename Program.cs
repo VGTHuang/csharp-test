@@ -11,6 +11,7 @@ namespace ConsoleSandbox
     {
         static void Main(string[] args)
         {
+            // class, inheritance, interface, using(IDisposable objects)
             using (Bus myBus = new Bus("asdasd", 12))
             using (Bus myOtherBus = new Bus("asdasd", 12))
             {
@@ -25,7 +26,7 @@ namespace ConsoleSandbox
                 }
             }
 
-
+            // regex matching syntax
             string regexTest = "123456abcd789qwer";
             Regex re = new Regex(@"[0-9]{1,3}[a-z]{1,3}");
             MatchCollection matches = re.Matches(regexTest);
@@ -34,6 +35,21 @@ namespace ConsoleSandbox
             foreach(Match m in matches)
             {
                 Console.WriteLine(m.ToString());
+            }
+
+            // file reading
+            string readText = System.IO.File.ReadAllText(@"..\..\files\some-text.txt");
+            Console.WriteLine("Text is: {0}", readText);
+
+            // file reading (line by line)
+            using (System.IO.StreamReader file = new System.IO.StreamReader(@"..\..\files\some-text.txt"))
+            {
+                string line;
+                int count = 0;
+                while((line = file.ReadLine()) != null)
+                {
+                    Console.WriteLine("Line {0} is: {1}", ++count, line);
+                }
             }
 
             Console.ReadKey();
