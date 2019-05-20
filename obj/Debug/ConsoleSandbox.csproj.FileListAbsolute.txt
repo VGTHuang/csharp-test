@@ -3,3 +3,9 @@ E:\My Tests\ConsoleSandbox\ConsoleSandbox\bin\Debug\ConsoleSandbox.exe
 E:\My Tests\ConsoleSandbox\ConsoleSandbox\bin\Debug\ConsoleSandbox.pdb
 E:\My Tests\ConsoleSandbox\ConsoleSandbox\obj\Debug\ConsoleSandbox.exe
 E:\My Tests\ConsoleSandbox\ConsoleSandbox\obj\Debug\ConsoleSandbox.pdb
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\bin\Debug\ConsoleSandbox.exe.config
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\obj\Debug\ConsoleSandbox.exe
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\obj\Debug\ConsoleSandbox.pdb
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\bin\Debug\ConsoleSandbox.exe
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\bin\Debug\ConsoleSandbox.pdb
+E:\My Tests\csharp-tests\ConsoleSandbox\ConsoleSandbox\obj\Debug\ConsoleSandbox.csprojResolveAssemblyReference.cache
