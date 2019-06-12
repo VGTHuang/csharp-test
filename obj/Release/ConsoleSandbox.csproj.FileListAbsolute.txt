@@ -1,5 +1,0 @@
-E:\My Tests\ConsoleSandbox\ConsoleSandbox\bin\Release\ConsoleSandbox.exe.config
-E:\My Tests\ConsoleSandbox\ConsoleSandbox\bin\Release\ConsoleSandbox.exe
-E:\My Tests\ConsoleSandbox\ConsoleSandbox\bin\Release\ConsoleSandbox.pdb
-E:\My Tests\ConsoleSandbox\ConsoleSandbox\obj\Release\ConsoleSandbox.exe
-E:\My Tests\ConsoleSandbox\ConsoleSandbox\obj\Release\ConsoleSandbox.pdb
