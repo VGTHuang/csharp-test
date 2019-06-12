@@ -16,11 +16,6 @@ namespace FormSandbox
         public Form1()
         {
             InitializeComponent();
-            LogManager l = new LogManager();
-            l.Log();
-            l.Log("myInfo");
-            l.Log("myInfo-true", true);
-            l.Log("myInfo-false", false);
         }
 
         private void btnOpenFolder_Click(object sender, EventArgs e)
@@ -28,7 +23,7 @@ namespace FormSandbox
             using (var dlg = new FolderBrowserDialog())
             {
                 DialogResult result = dlg.ShowDialog();
-                Debug.WriteLine(dlg.SelectedPath);
+                Debug.WriteLine(result);
             }
         }
     }
