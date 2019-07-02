@@ -25,9 +25,14 @@ namespace WPFSandbox
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(cbxMain.Text);
+            MessageBox.Show(tbxUsername.Text + "\n" + Convert.ToString(pbxPassword.Password));
+        }
+
+        private void btnSignup_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("sign up");
         }
     }
 }

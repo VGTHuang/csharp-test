@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFSandbox"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="360" Width="360" ResizeMode="CanMinimize">
 
     <Window.Resources>
         <sys:String x:Key="StrKey">StrValue</sys:String>
@@ -17,14 +17,24 @@
         </x:Array>
     </Window.Resources>
 
-    <Grid Background="White">
-        <Button Margin="30,103,367,159" Click="Button_Click" FontFamily="MV Boli">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="E:\MyRef\test\gallery\1.jpg"></Image>
-                <Label  Content="{StaticResource StrKey}" VerticalAlignment="Center" Width="66"/>
-            </StackPanel>
-        </Button>
-        <ComboBox x:Name="cbxMain" HorizontalAlignment="Left" Margin="30,48,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{StaticResource CbxArr}" SelectedIndex="0"/>
-    </Grid>
+    <Canvas>
+        <Grid Width="300" Height="60" Canvas.Top="30" Canvas.Left="26">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="19*"></ColumnDefinition>
+                <ColumnDefinition Width="56*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0">username</Label>
+            <TextBox x:Name="tbxUsername" Grid.Column="1" Grid.Row="0" Margin="0,4"/>
+            <Label Grid.Column="0" Grid.Row="1">password</Label>
+            <PasswordBox x:Name="pbxPassword" Grid.Column="1" Grid.Row="1" Margin="0,4"/>
+        </Grid>
+        <Button Name="btnLogin" Canvas.Top="110" Canvas.Left="26" Height="20" Width="100" Click="BtnLogin_Click" Content="login"></Button>
+        <Button Name="btnSignup" Canvas.Top="110" Canvas.Left="226" Height="20" Width="100" Click="btnSignup_Click" Content="login"></Button>
+    </Canvas>
+
 
 </Window>
