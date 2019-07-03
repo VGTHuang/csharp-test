@@ -60,19 +60,20 @@ namespace ConsoleSandbox
             public void Print(string stackStr)
             {
                 Console.WriteLine(stackStr + this.nodeName);
+                stackStr = stackStr.Substring(0, stackStr.Length - 1);
+                stackStr = stackStr + "|";
                 for(int i = 0; i < this.children.Count; i++)
                 {
                     if (i == this.children.Count - 1)
                     {
-                        this.children[i].Print(stackStr + "-");
-                    }
-                    else if (i == 0)
-                    {
+                        stackStr = stackStr.Substring(0, stackStr.Length - 1);
+                        stackStr = stackStr + " ";
                         this.children[i].Print(stackStr + "L");
                     }
                     else
                     {
-                        this.children[i].Print(stackStr + "|");
+                        stackStr = stackStr + " ";
+                        this.children[i].Print(stackStr + "-");
                     }
                 }
             }
