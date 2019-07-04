@@ -47,35 +47,41 @@ namespace ConsoleSandbox
 
             public int CompareTo(object obj)
             {
-                if(obj is Node)
+                if(!(obj is Node))
                 {
                     return -1;
                 }
                 else
                 {
-                    return (obj as Node).nodeName.CompareTo(this.nodeName);
+                    int i = (obj as Node).nodeName.CompareTo(this.nodeName);
+                    return i == 0 ? 1 : -i;
                 }
             }
 
             public string Print(string stackStr, bool isLast)
             {
-                if (isLast)
-                {
-                    Console.WriteLine(stackStr + "┗━" + this.nodeName);
-                }
-                else
-                {
-                    Console.WriteLine(stackStr + "┣━" + this.nodeName);
-                }
                 if(this.children.Count > 0)
                 {
                     if (isLast)
                     {
+                        Console.WriteLine(stackStr + "┗+ " + this.nodeName);
                         stackStr += "　　";
                     }
                     else
                     {
+                        Console.WriteLine(stackStr + "┣+ " + this.nodeName);
                         stackStr += "┃　";
+                    }
+                }
+                else
+                {
+                    if (isLast)
+                    {
+                        Console.WriteLine(stackStr + "┗　" + this.nodeName);
+                    }
+                    else
+                    {
+                        Console.WriteLine(stackStr + "┣　" + this.nodeName);
                     }
                 }
                 for (int i = 0; i < this.children.Count; i++)
@@ -143,6 +149,25 @@ namespace ConsoleSandbox
             foreach(Node childNode in node.children)
             {
                 MakeTree(childNode);
+            }
+        }
+
+        public static void DirSearch(string dir)
+        {
+            try
+            {
+                foreach (string f in Directory.GetFiles(dir))
+                    Console.WriteLine(f);
+                foreach (string d in Directory.GetDirectories(dir))
+                {
+                    Console.WriteLine(d);
+                    DirSearch(d);
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
