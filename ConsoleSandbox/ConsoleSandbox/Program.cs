@@ -29,7 +29,7 @@ namespace ConsoleSandbox
             baseNode.childPaths = list;
             Methods.MakeTree(baseNode);
 
-            baseNode.Print("%");
+            baseNode.Print("", true);
 
             Console.ReadKey();
         }

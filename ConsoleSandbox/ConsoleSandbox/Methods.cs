@@ -57,24 +57,46 @@ namespace ConsoleSandbox
                 }
             }
 
-            public void Print(string stackStr)
+            public string Print(string stackStr, bool isLast)
             {
-                Console.WriteLine(stackStr + this.nodeName);
-                stackStr = stackStr.Substring(0, stackStr.Length - 1);
-                stackStr = stackStr + "|";
-                for(int i = 0; i < this.children.Count; i++)
+                if (isLast)
                 {
-                    if (i == this.children.Count - 1)
+                    Console.WriteLine(stackStr + "┗━" + this.nodeName);
+                }
+                else
+                {
+                    Console.WriteLine(stackStr + "┣━" + this.nodeName);
+                }
+                if(this.children.Count > 0)
+                {
+                    if (isLast)
                     {
-                        stackStr = stackStr.Substring(0, stackStr.Length - 1);
-                        stackStr = stackStr + " ";
-                        this.children[i].Print(stackStr + "L");
+                        stackStr += "　　";
                     }
                     else
                     {
-                        stackStr = stackStr + " ";
-                        this.children[i].Print(stackStr + "-");
+                        stackStr += "┃　";
                     }
+                }
+                for (int i = 0; i < this.children.Count; i++)
+                {
+                    if (i == this.children.Count - 1)
+                    {
+                        stackStr = this.children[i].Print(stackStr, true);
+                    }
+                    else
+                    {
+                        stackStr = this.children[i].Print(stackStr, false);
+                    }
+                }
+                if (this.children.Count > 0)
+                {
+                    return stackStr.Substring(0, stackStr.Length - 2);
+                    
+                }
+                else
+                {
+                    return stackStr;
                 }
             }
         }
