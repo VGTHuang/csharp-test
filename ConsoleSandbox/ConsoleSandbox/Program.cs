@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace ConsoleSandbox
     {
         static void Main(string[] args)
         {
-            string searchPath = @"E:\MyRef\work\FilingSystem\";
+            DataTable dt = new DataTable();
+            string searchPath = @"C:\PascalWebSTD\Data";
             string savePath = @"E:\tree\";
             Methods.Node baseNode = new Methods.Node(new Methods.FileFolderPath(searchPath, true));
             Methods.DirSearch(baseNode);

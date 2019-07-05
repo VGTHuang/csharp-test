@@ -36,7 +36,7 @@ namespace ConsoleSandbox
             }
             public string displayNodeName
             {
-                get { return (this.nodePath.isFolder ? "@@" : "") + this.nodePath.Path + (this.nodePath.isFolder?"@@":""); }
+                get { return (this.nodePath.isFolder ? "【" : "") + this.nodePath.Path + (this.nodePath.isFolder?"】":""); }
             }
 
             public Node(FileFolderPath path)
