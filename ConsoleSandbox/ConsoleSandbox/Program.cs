@@ -16,13 +16,18 @@ namespace ConsoleSandbox
     {
         static void Main(string[] args)
         {
+            /*
             DataTable dt = new DataTable();
             string searchPath = @"C:\PascalWebSTD\Data";
             string savePath = @"E:\tree\";
             Methods.Node baseNode = new Methods.Node(new Methods.FileFolderPath(searchPath, true));
             Methods.DirSearch(baseNode);
             baseNode.Print(savePath);
-            
+            */
+
+            XMLManager.CreatXmlBookshelf("admin1");
+            XMLManager.readXmlFromFileWLinq();
+
             Console.ReadKey();
         }
     }
