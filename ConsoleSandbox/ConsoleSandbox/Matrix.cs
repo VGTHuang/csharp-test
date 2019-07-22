@@ -9,55 +9,25 @@ namespace ConsoleSandbox
     class Matrix
     {
         #region test
-        public static void Test()
+        public static void Test(int size)
         {
-            Matrix tm = new Matrix(2, 2);
-            tm.setValue(0, 0, 0);
-            tm.setValue(0, 1, 2);
-            tm.setValue(1, 0, 1);
-            tm.setValue(1, 1, 1);
-            tm.Print();
-            tm.ToEchelon();
-            tm.Print();
-
-            Matrix m = new Matrix(4, 4);
-            m.setValue(0, 0, 2);
-            m.setValue(0, 1, 3);
-            m.setValue(0, 2, 2);
-            m.setValue(0, 3, 1);
-            m.setValue(1, 0, 1);
-            m.setValue(1, 1, 0);
-            m.setValue(1, 2, 0);
-            m.setValue(1, 3, 2);
-            m.setValue(2, 0, 4);
-            m.setValue(2, 1, 3);
-            m.setValue(2, 2, 1);
-            m.setValue(2, 3, 1);
-            m.setValue(3, 0, 1);
-            m.setValue(3, 1, 3);
-            m.setValue(3, 2, 1);
-            m.setValue(3, 3, 5);
-            m.Print();
-            // nm.ToEchelon();
+            Matrix m = new Matrix(size, size);
+            Random rand = new Random();
+            for(int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    m.setValue(i, j, rand.NextDouble()*2-1);
+                }
+            }
+            //m.Print();
+            //Console.WriteLine(m.getDetValue());
             Matrix inv = m.Inverse();
-            inv.Print();
-            Console.WriteLine(m.getDetValue());
-            Console.WriteLine(inv.getDetValue());
+            //inv.Print();
+            //Console.WriteLine(m.getDetValue());
+            //Console.WriteLine(inv.getDetValue());
 
-            inv.Multiply(m).Print();
-
-            Matrix n = new Matrix(4, 2);
-            n.setValue(0, 0, 5);
-            n.setValue(0, 1, 0);
-            n.setValue(1, 0, 2);
-            n.setValue(1, 1, 1);
-            n.setValue(2, 0, 1);
-            n.setValue(2, 1, 4);
-            n.setValue(3, 0, 3);
-            n.setValue(3, 1, 0);
-            n.Print();
-            Matrix product = m.Multiply(n);
-            product.Print();
+            inv.Multiply(m);
         }
         #endregion
 
@@ -159,7 +129,6 @@ namespace ConsoleSandbox
             }
             Matrix newMatrix = this.Clone();
             newMatrix.ToEchelon();
-            newMatrix.Print();
             double product = 1;
             for(int i = newMatrix.ColCount - 1; i >= 0; i--)
             {
@@ -180,7 +149,7 @@ namespace ConsoleSandbox
                 {
                     if (this.data[rowIndex, colIndex] != 0)
                     {
-                        for (int i = 1; rowIndex - i > colIndex; i++)
+                        for (int i = 1; rowIndex - i >= colIndex; i++)
                         {
                             if (this.data[rowIndex - i, colIndex] != 0)
                             {
@@ -206,9 +175,27 @@ namespace ConsoleSandbox
             }
         }
 
+        public int getRank()
+        {
+            if (!this.IsSquare())
+            {
+                throw new MatrixMiscException("Not square matrix");
+            }
+            Matrix clone = this.Clone();
+            clone.ToEchelon();
+            int rank = this.RowCount;
+            for(int i = this.RowCount - 1; i >= 0; i--)
+            {
+                if(clone.data[i, i] == 0)
+                {
+                    rank--;
+                }
+            }
+            return rank;
+        }
+
         public Matrix Inverse()
         {
-            Console.WriteLine("@@@@@@@@@@");
             if (!this.IsSquare())
             {
                 throw new MatrixMiscException("Not square matrix");
@@ -221,7 +208,7 @@ namespace ConsoleSandbox
                 {
                     if (clone.data[rowIndex, colIndex] != 0)
                     {
-                        for (int i = 1; rowIndex - i > colIndex; i++)
+                        for (int i = 1; rowIndex - i >= colIndex; i++)
                         {
                             if (clone.data[rowIndex - i, colIndex] != 0)
                             {
@@ -247,8 +234,6 @@ namespace ConsoleSandbox
                     }
                 }
             }
-            m.Print();
-            clone.Print();
             for (int colIndex = clone.ColCount - 1; colIndex > 0; colIndex--)
             {
                 for (int rowIndex = colIndex - 1; rowIndex >= 0; rowIndex--)
@@ -266,17 +251,33 @@ namespace ConsoleSandbox
                     }
                 }
             }
-            m.Print();
-            clone.Print();
-            for (int rowIndex = clone.RowCount - 1; rowIndex > 0; rowIndex--)
+            for (int rowIndex = clone.RowCount - 1; rowIndex >= 0; rowIndex--)
             {
-                m.MultiplyRow(rowIndex, 1 / clone.data[rowIndex, rowIndex]);
+                double rat = 1 / clone.data[rowIndex, rowIndex];
+                m.MultiplyRow(rowIndex, rat);
             }
-            Console.WriteLine("@@@@@@@@@@");
             return m;
         }
 
-        public Matrix getTranspose()
+        public void Transpose()
+        {
+            if (!this.IsSquare())
+            {
+                throw new MatrixMiscException("Not square matrix");
+            }
+            double temp = 0;
+            for (int rowIndex = 1; rowIndex < this.RowCount; rowIndex++)
+            {
+                for (int colIndex = 0; colIndex < rowIndex; colIndex++)
+                {
+                    temp = data[colIndex, rowIndex];
+                    data[colIndex, rowIndex] = data[rowIndex, colIndex];
+                    data[rowIndex, colIndex] = data[colIndex, rowIndex];
+                }
+            }
+        }
+
+        public Matrix TransposeNew()
         {
             Matrix newMatrix = new Matrix(this.ColCount, this.RowCount);
             for (int rowIndex = 0; rowIndex < this.RowCount; rowIndex++)
@@ -287,6 +288,17 @@ namespace ConsoleSandbox
                 }
             }
             return newMatrix;
+        }
+
+        public void Operate(Func<double, double> operation)
+        {
+            for (int rowIndex = 0; rowIndex < this.RowCount; rowIndex++)
+            {
+                for (int colIndex = 0; colIndex < this.ColCount; colIndex++)
+                {
+                    this.data[rowIndex, colIndex] = operation(this.data[rowIndex, colIndex]);
+                }
+            }
         }
 
 
@@ -454,7 +466,6 @@ namespace ConsoleSandbox
                 this.data[RowIndex2, colIndex] = temp;
             }
         }
-
         #endregion
 
         #region inheritances
