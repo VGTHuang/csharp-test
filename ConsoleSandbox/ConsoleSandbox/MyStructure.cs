@@ -29,8 +29,8 @@ namespace ConsoleSandbox
 
         public static void MakeNN()
         {
-            Matrix inputM = new Matrix(2, 1);
-            Matrix transM = new Matrix(1, 2);
+            Matrix inputM = new Matrix(3, 1);
+            Matrix transM = new Matrix(1, 3);
             Matrix outputM = new Matrix(1, 1);
             Matrix outputM_s = new Matrix(1, 1);
 
@@ -50,13 +50,14 @@ namespace ConsoleSandbox
             List<Example> tExamples = allexamples.GetRange(0, exampleCount);
             List<Example> vExamples = allexamples.GetRange(exampleCount, allexamples.Count - exampleCount);
 
-            foreach(Example trainEx in tExamples)
+            inputM.setValue(0, 0, 1);
+            foreach (Example trainEx in tExamples)
             {
-                inputM.setValue(0, 0, trainEx.inputs[0]);
-                inputM.setValue(1, 0, trainEx.inputs[1]);
+                inputM.setValue(1, 0, trainEx.inputs[0]);
+                inputM.setValue(2, 0, trainEx.inputs[1]);
                 outputM = transM.Multiply(inputM);
                 outputM.Operate(Sigmoid);
-                Console.WriteLine(outputM.data[0, 0]);
+                Console.WriteLine(outputM.data[0, 0] > 0.6? "true" : "false");
             }
 
         }

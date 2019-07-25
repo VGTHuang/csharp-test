@@ -34,7 +34,10 @@ namespace ConsoleSandbox
             */
             // GraphTest.Play();
             // MyStructure.TestMatrix();
-            MyStructure.MakeNN();
+            // MyStructure.MakeNN();
+
+            BigNumber.Test();
+
             Console.ReadKey();
         }
     }

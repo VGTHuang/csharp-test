@@ -16,7 +16,8 @@ namespace FormSandbox
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.Run(new frmStart());
+            Application.Run(new frmMinesweeper());
         }
     }
 }
