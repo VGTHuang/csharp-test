@@ -15,7 +15,7 @@ namespace FormSandbox
         public frmMinesweeper()
         {
             InitializeComponent();
-            initializeField(10, 10, 0.12);
+            initializeField(10, 10, 0.2);
         }
         private int pixelSize = 30;
         private int msCol, msRow;
@@ -111,7 +111,6 @@ namespace FormSandbox
                             }
                         }
                         pixels[i, j].Value = adjacentMineCount;
-                        pixels[i, j].Label.Text = adjacentMineCount.ToString();
                     }
                 }
             }

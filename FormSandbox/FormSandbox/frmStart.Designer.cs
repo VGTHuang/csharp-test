@@ -30,6 +30,7 @@
         {
             this.btnStartColorMatch = new System.Windows.Forms.Button();
             this.btnStartMinesweeper = new System.Windows.Forms.Button();
+            this.btnStartTetris = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnStartColorMatch
@@ -52,11 +53,22 @@
             this.btnStartMinesweeper.UseVisualStyleBackColor = true;
             this.btnStartMinesweeper.Click += new System.EventHandler(this.btnStartMinesweeper_Click);
             // 
+            // btnStartTetris
+            // 
+            this.btnStartTetris.Location = new System.Drawing.Point(99, 204);
+            this.btnStartTetris.Name = "btnStartTetris";
+            this.btnStartTetris.Size = new System.Drawing.Size(99, 23);
+            this.btnStartTetris.TabIndex = 2;
+            this.btnStartTetris.Text = "tetris";
+            this.btnStartTetris.UseVisualStyleBackColor = true;
+            this.btnStartTetris.Click += new System.EventHandler(this.btnStartTetris_Click);
+            // 
             // frmStart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Controls.Add(this.btnStartTetris);
             this.Controls.Add(this.btnStartMinesweeper);
             this.Controls.Add(this.btnStartColorMatch);
             this.Name = "frmStart";
@@ -69,5 +81,6 @@
 
         private System.Windows.Forms.Button btnStartColorMatch;
         private System.Windows.Forms.Button btnStartMinesweeper;
+        private System.Windows.Forms.Button btnStartTetris;
     }
 }

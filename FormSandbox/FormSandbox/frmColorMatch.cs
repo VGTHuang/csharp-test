@@ -30,7 +30,7 @@ namespace FormSandbox
         {
             InitializeComponent();
             changeColor();
-            sw = new StreamWriter(@"record.txt", true);
+            sw = new StreamWriter(@"resources/record.txt", true);
         }
         
         private void saveChoice(int level)
@@ -50,14 +50,15 @@ namespace FormSandbox
             rf = rand.Next(256);
             gf = rand.Next(256);
             bf = rand.Next(256);
-            bgColor.BackColor = Color.FromArgb(rb, gb, bb);
-            fgColor.ForeColor = Color.FromArgb(rf, gf, bf);
+            lbColor.BackColor = Color.FromArgb(rb, gb, bb);
+            lbColor.ForeColor = Color.FromArgb(rf, gf, bf);
+            lbColor.Text = (char)(rand.Next(26) + 65) + "";
         }
 
         private void analyze()
         {
             sw.Close();
-            using (StreamReader sr = new StreamReader(@"record.txt"))
+            using (StreamReader sr = new StreamReader(@"resources/record.txt"))
             {
                 int validRecCount = 0;
                 while (!sr.EndOfStream)
@@ -70,7 +71,7 @@ namespace FormSandbox
                 }
                 MessageBox.Show(validRecCount.ToString());
             }
-            sw = new StreamWriter(@"record.txt", true);
+            sw = new StreamWriter(@"resources/record.txt", true);
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -28,5 +28,11 @@ namespace FormSandbox
             frmMinesweeper fms = new frmMinesweeper();
             fms.Show();
         }
+
+        private void btnStartTetris_Click(object sender, EventArgs e)
+        {
+            frmTetris ftt = new frmTetris();
+            ftt.Show();
+        }
     }
 }
