@@ -13,11 +13,12 @@ namespace FormSandbox
 {
     public partial class frmTetris : Form
     {
-        private Bitmap bm;
-
+        #region settings to be changed
         public int size = 15;
         public int col = 12, row = 20;
-
+        public int speed = 500; // ms
+        #endregion
+        private Bitmap bm;
         private Wall wall;
 
         public frmTetris()
@@ -66,9 +67,9 @@ namespace FormSandbox
 
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (isGameOver == false && !this.isClosed)
+            while (!isGameOver&& !this.isClosed)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(speed);
                 // move down
                 if (isPausing)
                 {
@@ -168,8 +169,8 @@ namespace FormSandbox
                 Brushes.Yellow,
                 Brushes.Green,
                 Brushes.Violet,
-                Brushes.Olive,
-                Brushes.Beige
+                Brushes.Orange,
+                Brushes.Purple
             };
 
             public static Pen bBorder = Pens.DarkMagenta;
@@ -189,34 +190,37 @@ namespace FormSandbox
                 int[,] bCoords = this.brick.GetRotatedCoords();
                 HashSet<int> modifiedRows = new HashSet<int>();
                 List<int> deleteRowList = new List<int>();
-                for (int i = 0; i < 4; i++)
+                if (!this.tetris.isGameOver)
                 {
-                    if(bCoords[i, 1] < 0)
+                    for (int i = 0; i < 4; i++)
                     {
-                        onGameOver(this.tetris);
-                        return deleteRowList;
-                    }
-                    else
-                    {
-                        coords[bCoords[i, 1], bCoords[i, 0]] = this.brick.index;
-                        modifiedRows.Add(bCoords[i, 1]);
-                    }
-                }
-                // check if rows are cleared
-                foreach(int row in modifiedRows)
-                {
-                    int i = 0;
-                    for(; i < this.tetris.col; i++)
-                    {
-                        if(coords[row, i] == 0)
+                        if(bCoords[i, 1] < 0)
                         {
-                            break;
+                            onGameOver();
+                            return deleteRowList;
+                        }
+                        else
+                        {
+                            coords[bCoords[i, 1], bCoords[i, 0]] = this.brick.index;
+                            modifiedRows.Add(bCoords[i, 1]);
                         }
                     }
-                    if(i == this.tetris.col)
+                    // check if rows are cleared
+                    foreach(int row in modifiedRows)
                     {
-                        // delete row
-                        deleteRowList.Add(row);
+                        int i = 0;
+                        for(; i < this.tetris.col; i++)
+                        {
+                            if(coords[row, i] == 0)
+                            {
+                                break;
+                            }
+                        }
+                        if(i == this.tetris.col)
+                        {
+                            // delete row
+                            deleteRowList.Add(row);
+                        }
                     }
                 }
                 return deleteRowList;
@@ -411,11 +415,10 @@ namespace FormSandbox
                 }
             }
 
-            private void onGameOver(frmTetris t)
+            private void onGameOver()
             {
-                MessageBox.Show("game over");
-                t.isGameOver = true;
-                t.bgWorker.CancelAsync();
+                MessageBox.Show("game over" + this.tetris.isGameOver);
+                this.tetris.isGameOver = true;
             }
         }
         
