@@ -30,10 +30,10 @@
         {
             this.pbx = new System.Windows.Forms.PictureBox();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.lblScore = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbx)).BeginInit();
             this.SuspendLayout();
-            this.KeyPreview = true;
             // 
             // pbx
             // 
@@ -48,29 +48,42 @@
             // 
             this.bgWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorker_DoWork);
             this.bgWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorker_ProgressChanged);
+            this.bgWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorker_RunWorkerCompleted);
             // 
-            // button1
+            // btnPause
             // 
-            this.button1.Location = new System.Drawing.Point(228, 27);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(54, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnPause.Location = new System.Drawing.Point(228, 27);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(54, 23);
+            this.btnPause.TabIndex = 1;
+            this.btnPause.Text = "pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.Location = new System.Drawing.Point(228, 101);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(46, 12);
+            this.lblScore.TabIndex = 2;
+            this.lblScore.Text = "Score: 0";
             // 
             // frmTetris
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(294, 393);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.lblScore);
+            this.Controls.Add(this.btnPause);
             this.Controls.Add(this.pbx);
+            this.KeyPreview = true;
             this.Name = "frmTetris";
             this.Text = "frmTetris";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmTetris_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pbx)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -78,6 +91,7 @@
 
         private System.Windows.Forms.PictureBox pbx;
         private System.ComponentModel.BackgroundWorker bgWorker;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Label lblScore;
     }
 }

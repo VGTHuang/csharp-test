@@ -32,6 +32,14 @@ namespace FormSandbox
             bgWorker.RunWorkerAsync();
         }
 
+        private bool isClosed = false;
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            isClosed = true;
+            base.OnFormClosing(e);
+        }
+
         private void drawAll()
         {
             using(Graphics gr = Graphics.FromImage(bm))
@@ -47,20 +55,41 @@ namespace FormSandbox
         private void bgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             drawAll();
+            this.lblScore.Text = "Score: " + deleteRowsCount;
         }
 
         private int iii = 0;
-        public bool isGameOver = false;
+        private bool isGameOver = false;
+        private bool isPausing = false;
+        private List<int> deleteRowsList = new List<int>();
+        private int deleteRowsCount = 0;
+
         private void bgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (isGameOver == false)
+            while (isGameOver == false && !this.isClosed)
             {
                 Thread.Sleep(500);
                 // move down
+                if (isPausing)
+                {
+                    continue;
+                }
                 if (!this.wall.BrickMoveDown())
                 {
-                    this.wall.AddBrickToWall();
-                    if (!this.isGameOver)
+                    this.deleteRowsList = this.wall.AddBrickToWall();
+                    if(this.deleteRowsList.Count > 0)
+                    {
+                        this.wall.RandomizeNewBrick();
+                        foreach (int row in deleteRowsList)
+                        {
+                            this.wall.DeleteRow(row);
+                            Thread.Sleep(50);
+                            deleteRowsCount++;
+                            bgWorker.ReportProgress(iii++);
+                            iii = iii % 10;
+                        }
+                    }
+                    else if (!this.isGameOver)
                     {
                         this.wall.RandomizeNewBrick();
                     }
@@ -70,17 +99,23 @@ namespace FormSandbox
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void bgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+        }
+
+        private void btnPause_Click(object sender, EventArgs e)
         {
             if (!this.isGameOver)
             {
-                bgWorker.ReportProgress(-1);
+                this.btnPause.Text = this.isPausing ? "pause" : "continue";
+                this.isPausing = !this.isPausing;
             }
         }
 
         private void frmTetris_KeyDown(object sender, KeyEventArgs e)
         {
-            if (this.isGameOver)
+            if (this.isGameOver || this.isPausing)
             {
                 return;
             }
@@ -91,8 +126,23 @@ namespace FormSandbox
                     break;
                 case 83:  // drop
                     while (wall.BrickMoveDown());
-                    this.wall.AddBrickToWall();
-                    this.wall.RandomizeNewBrick();
+                    this.deleteRowsList = this.wall.AddBrickToWall();
+                    if (this.deleteRowsList.Count > 0)
+                    {
+                        this.wall.RandomizeNewBrick();
+                        foreach (int row in deleteRowsList)
+                        {
+                            this.wall.DeleteRow(row);
+                            Thread.Sleep(50);
+                            deleteRowsCount++;
+                            bgWorker.ReportProgress(iii++);
+                            iii = iii % 10;
+                        }
+                    }
+                    else if (!this.isGameOver)
+                    {
+                        this.wall.RandomizeNewBrick();
+                    }
                     break;
                 case 68:  // right
                     this.wall.BrickMoveRight();
@@ -124,7 +174,6 @@ namespace FormSandbox
 
             public static Pen bBorder = Pens.DarkMagenta;
 
-
             private int[,] coords;
             private frmTetris tetris;
             private Brick brick;
@@ -135,42 +184,42 @@ namespace FormSandbox
                 this.tetris = tetris;
             }
 
-            public void AddBrickToWall()
+            public List<int> AddBrickToWall()
             {
                 int[,] bCoords = this.brick.GetRotatedCoords();
-                List<int> modifiedRows = new List<int>();
+                HashSet<int> modifiedRows = new HashSet<int>();
+                List<int> deleteRowList = new List<int>();
                 for (int i = 0; i < 4; i++)
                 {
                     if(bCoords[i, 1] < 0)
                     {
                         onGameOver(this.tetris);
-                        return;
+                        return deleteRowList;
                     }
                     else
                     {
                         coords[bCoords[i, 1], bCoords[i, 0]] = this.brick.index;
-                        if (!modifiedRows.Any((r) => r == bCoords[i, 1]))
-                        {
-                            modifiedRows.Add(bCoords[i, 0]);
-                        }
+                        modifiedRows.Add(bCoords[i, 1]);
                     }
                 }
+                // check if rows are cleared
                 foreach(int row in modifiedRows)
                 {
                     int i = 0;
-                    for(; i < this.coords.GetLength(1); i++)
+                    for(; i < this.tetris.col; i++)
                     {
                         if(coords[row, i] == 0)
                         {
                             break;
                         }
                     }
-                    if(i == this.coords.GetLength(1))
+                    if(i == this.tetris.col)
                     {
                         // delete row
-                        this.DeleteRow(row);
+                        deleteRowList.Add(row);
                     }
                 }
+                return deleteRowList;
             }
 
             public void DrawWall(Graphics gr)
@@ -224,8 +273,13 @@ namespace FormSandbox
                         this.brick = new BrickO();
                         break;
                 }
+                //this.brick = new BrickI();
                 this.brick.position[0] = this.tetris.col / 2;
                 this.brick.position[1] = -1;
+                if(this.brick.GetType() == typeof(BrickI))
+                {
+                    this.brick.position[1] = -2;
+                }
             }
 
             #region move brick
@@ -243,6 +297,11 @@ namespace FormSandbox
                     }
                 }
                 return true;
+            }
+
+            public void BrickMoveUp()
+            {
+                this.brick.position[1]--;
             }
 
             public void BrickMoveLeft()
@@ -341,7 +400,7 @@ namespace FormSandbox
 
             #endregion
 
-            private void DeleteRow(int rowIndex)
+            public void DeleteRow(int rowIndex)
             {
                 for(int row = rowIndex; row > 0; row--)
                 {
@@ -356,6 +415,7 @@ namespace FormSandbox
             {
                 MessageBox.Show("game over");
                 t.isGameOver = true;
+                t.bgWorker.CancelAsync();
             }
         }
         
